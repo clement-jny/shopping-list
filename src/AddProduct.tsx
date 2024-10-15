@@ -24,17 +24,6 @@ const ALERT_OPTIONS: AlertOptions = {
 const AddProduct = () => {
 	const { shopItems, setShopItems } = useShoppingContext();
 
-	const [emptyCount, setEmptyCount] = useState<number>(0);
-
-	useEffect(() => {
-		if (emptyCount > 3) {
-			Alert.alert("Infos", "Je vide la liste");
-			setShopItems([]);
-
-			setEmptyCount(0);
-		}
-	}, [emptyCount]);
-
 	const ref = useRef<TextInput>(null);
 
 	const [tempShopItem, setTempShopItem] = useState<string>("");
@@ -47,8 +36,6 @@ const AddProduct = () => {
 				ALERT_BUTTONS,
 				ALERT_OPTIONS
 			);
-
-			setEmptyCount((previousCount) => previousCount + 1);
 
 			return;
 		}
@@ -75,7 +62,11 @@ const AddProduct = () => {
 				autoComplete="off"
 			/>
 
-			<Button title="Validate" onPress={handleOnPress} />
+			<Button
+				title="Validate"
+				onPress={handleOnPress}
+				disabled={tempShopItem.length < 3 || false}
+			/>
 		</View>
 	);
 };
