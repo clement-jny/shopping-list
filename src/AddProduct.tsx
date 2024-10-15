@@ -1,17 +1,55 @@
-import { Button, TextInput, View, StyleSheet, Alert } from "react-native";
-import { useRef, useState } from "react";
+import {
+	Button,
+	TextInput,
+	View,
+	StyleSheet,
+	Alert,
+	AlertButton,
+	AlertOptions,
+} from "react-native";
+import { useEffect, useRef, useState } from "react";
 import { useShoppingContext } from "../shopping-context";
+
+const MIN_PRODUCT_NAME_LENGTH = 2;
+
+const ALERT_BUTTONS: AlertButton[] = [
+	{ text: "OK", onPress: () => console.log("OK Pressed") },
+	{ text: "Cancel", onPress: () => console.log("Cancel Pressed") },
+];
+
+const ALERT_OPTIONS: AlertOptions = {
+	cancelable: true,
+};
 
 const AddProduct = () => {
 	const { shopItems, setShopItems } = useShoppingContext();
+
+	const [emptyCount, setEmptyCount] = useState<number>(0);
+
+	useEffect(() => {
+		if (emptyCount > 3) {
+			Alert.alert("Infos", "Je vide la liste");
+			setShopItems([]);
+
+			setEmptyCount(0);
+		}
+	}, [emptyCount]);
 
 	const ref = useRef<TextInput>(null);
 
 	const [tempShopItem, setTempShopItem] = useState<string>("");
 
 	const handleOnPress = () => {
-		if (tempShopItem.length === 0) {
-			Alert.alert("Error", "Product name is empty");
+		if (tempShopItem.length < MIN_PRODUCT_NAME_LENGTH) {
+			Alert.alert(
+				"Error",
+				"Product name is too short",
+				ALERT_BUTTONS,
+				ALERT_OPTIONS
+			);
+
+			setEmptyCount((previousCount) => previousCount + 1);
+
 			return;
 		}
 

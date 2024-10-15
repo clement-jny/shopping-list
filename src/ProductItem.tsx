@@ -21,13 +21,12 @@ const ProductItem = ({ itemKey, itemName }: ShopItem) => {
 
 	return (
 		<Pressable
+			key={itemKey}
 			onLongPress={handleOnPress}
 			delayLongPress={1500}
-			style={({ pressed }) => pressed && styles.pressed}
+			style={({ pressed }) => (pressed ? styles.pressed : styles.listItem)}
 		>
-			<Text key={itemKey} style={styles.listItem}>
-				{itemName}
-			</Text>
+			<Text style={{ color: "white" }}>{itemName}</Text>
 		</Pressable>
 	);
 };
@@ -36,12 +35,14 @@ const styles = StyleSheet.create({
 	listItem: {
 		height: 40,
 		backgroundColor: "red",
-		color: "white",
 		padding: 10,
 		margin: 10,
 	},
 	pressed: {
+		height: 40,
 		backgroundColor: "blue",
+		padding: 10,
+		margin: 10,
 	},
 });
 
