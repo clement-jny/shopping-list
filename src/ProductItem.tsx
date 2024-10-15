@@ -1,17 +1,34 @@
-import React from "react";
-import { Text, StyleSheet } from "react-native";
+import { useState } from "react";
+import { Text, StyleSheet, TouchableOpacity, Pressable } from "react-native";
+import { useShoppingContext } from "../shopping-context";
+// import * as Haptics from "expo-haptics";
+import { ShopItem } from "./models";
 
-type ShopItemProps = {
-	itemKey: string;
-	itemName: string;
-};
-const ProductItem = ({ itemKey, itemName }: ShopItemProps) => {
-	console.log(itemKey, itemName);
+const ProductItem = ({ itemKey, itemName }: ShopItem) => {
+	const [isPressed, setIsPressed] = useState(false);
+
+	const { removeShopItem } = useShoppingContext();
+
+	const handleOnPress = () => {
+		console.log(`ProductItem ${itemKey} - ${itemName} pressed`);
+		// Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+		// removeShopItem(item.itemKey);
+
+		removeShopItem(itemKey);
+
+		console.log("Long press finished");
+	};
 
 	return (
-		<Text key={itemKey} style={styles.listItem}>
-			{itemName}
-		</Text>
+		<Pressable
+			onLongPress={handleOnPress}
+			delayLongPress={1500}
+			style={({ pressed }) => pressed && styles.pressed}
+		>
+			<Text key={itemKey} style={styles.listItem}>
+				{itemName}
+			</Text>
+		</Pressable>
 	);
 };
 
@@ -22,6 +39,9 @@ const styles = StyleSheet.create({
 		color: "white",
 		padding: 10,
 		margin: 10,
+	},
+	pressed: {
+		backgroundColor: "blue",
 	},
 });
 

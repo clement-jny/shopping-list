@@ -1,11 +1,12 @@
 import { Button, TextInput, View, StyleSheet, Alert } from "react-native";
 import { useRef, useState } from "react";
+import { useShoppingContext } from "../shopping-context";
 
-type AddProductProps = {
-	setShopItem: (shopItem: string) => void;
-};
-const AddProduct = ({ setShopItem }: AddProductProps) => {
+const AddProduct = () => {
+	const { shopItems, setShopItems } = useShoppingContext();
+
 	const ref = useRef<TextInput>(null);
+
 	const [tempShopItem, setTempShopItem] = useState<string>("");
 
 	const handleOnPress = () => {
@@ -14,9 +15,14 @@ const AddProduct = ({ setShopItem }: AddProductProps) => {
 			return;
 		}
 
-		setShopItem(tempShopItem);
+		setShopItems([
+			{ itemKey: Date.now().toString(), itemName: tempShopItem },
+			...shopItems,
+		]);
+
 		ref.current?.clear();
 		ref.current?.focus();
+		setTempShopItem("");
 	};
 
 	return (
