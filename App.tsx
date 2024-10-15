@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, FlatList, SafeAreaView } from "react-native";
 
-import AddProduct from "./AddProduct";
-import ProductItem from "./ProductItem";
+import AddProduct from "./src/AddProduct";
+import ProductItem from "./src/ProductItem";
 
 type ShopItemProps = {
 	key: string;
