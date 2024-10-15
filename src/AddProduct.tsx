@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import { useShoppingContext } from "../shopping-context";
+import ModalView from "./Modal";
 
 const MIN_PRODUCT_NAME_LENGTH = 2;
 
@@ -27,15 +28,18 @@ const AddProduct = () => {
 	const ref = useRef<TextInput>(null);
 
 	const [tempShopItem, setTempShopItem] = useState<string>("");
+	const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
 	const handleOnPress = () => {
 		if (tempShopItem.length < MIN_PRODUCT_NAME_LENGTH) {
-			Alert.alert(
-				"Error",
-				"Product name is too short",
-				ALERT_BUTTONS,
-				ALERT_OPTIONS
-			);
+			// Alert.alert(
+			// 	"Error",
+			// 	"Product name is too short",
+			// 	ALERT_BUTTONS,
+			// 	ALERT_OPTIONS
+			// );
+
+			setIsModalVisible(true);
 
 			return;
 		}
@@ -65,7 +69,12 @@ const AddProduct = () => {
 			<Button
 				title="Validate"
 				onPress={handleOnPress}
-				disabled={tempShopItem.length < 3 || false}
+				// disabled={tempShopItem.length < 3}
+			/>
+
+			<ModalView
+				isModalVisible={isModalVisible}
+				setIsModalVisible={setIsModalVisible}
 			/>
 		</View>
 	);
